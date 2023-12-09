@@ -1,0 +1,9 @@
+config.py
+.env
+/venv/**
+.idea
+test.py
+!/devman_logs.log
+devman_logs.log
+__pycache__/**
+bot.log
