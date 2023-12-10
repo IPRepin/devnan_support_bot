@@ -1,5 +1,3 @@
-import types
-
 from aiogram import Bot, Dispatcher, types
 from aiogram.filters import CommandStart, Filter
 from aiogram.exceptions import TelegramNetworkError
@@ -10,6 +8,8 @@ import os
 
 import logging
 
+from dialogflow_answer import detect_intent_texts
+
 logger = logging.getLogger(__name__)
 
 
@@ -17,8 +17,15 @@ async def get_start(message: types.Message) -> None:
     await message.answer(f"Здравствуйте {message.from_user.first_name}")
 
 
-async def get_eho(message: types.Message) -> None:
-    await message.answer(message.text)
+async def get_dialogflow(message: types.Message) -> None:
+    session_id = str(message.from_user.id)
+    texts = [message.text]
+    language_code = "ru-RU"
+    intents = detect_intent_texts(project_id=project_id,
+                                  session_id=session_id,
+                                  texts=texts,
+                                  language_code=language_code)
+    await message.answer(intents)
 
 
 async def connect_telegram():
@@ -26,8 +33,9 @@ async def connect_telegram():
     bot = Bot(token=telegram_token)
     dp = Dispatcher()
     dp.message.register(get_start, CommandStart())
-    dp.message.register(get_eho)
-    logging.basicConfig(level=logging.INFO,
+    dp.message.register(get_dialogflow)
+    logging.basicConfig(filename="bot.log",
+                        level=logging.INFO,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
                         )
     logger.setLevel(logging.INFO)
@@ -41,4 +49,5 @@ async def connect_telegram():
 
 if __name__ == '__main__':
     load_dotenv()
+    project_id = os.getenv("DIALOGFLOW_ID")
     asyncio.run(connect_telegram())
