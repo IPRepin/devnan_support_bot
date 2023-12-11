@@ -6,7 +6,7 @@ from google.cloud import dialogflow
 import json
 
 
-def parse_json():
+def open_learning():
     with open('learning.json', 'r', encoding="UTF-8") as file:
         data = json.load(file)
     return data
@@ -15,7 +15,8 @@ def parse_json():
 def create_intent(project_id: str,
                   display_name: str,
                   training_phrases_parts: list,
-                  message_texts: list):
+                  message_texts: list
+                  ):
     intents_client = dialogflow.IntentsClient()
 
     parent = dialogflow.AgentsClient.agent_path(project_id)
@@ -42,7 +43,7 @@ def create_intent(project_id: str,
 
 if __name__ == '__main__':
     load_dotenv()
-    data = parse_json()
+    data = open_learning()
     training_phrases_parts = data['Устройство на работу']['questions']
     message_texts = [data['Устройство на работу']['answer']]
     project_id = os.getenv("DIALOGFLOW_ID")

@@ -1,0 +1,10 @@
+aiogram==3.2.0
+aiohttp==3.9.1
+google-api-core==2.15.0
+google-auth==2.25.2
+google-cloud-api-keys==0.5.5
+google-cloud-dialogflow==2.26.0
+python-dotenv==1.0.0
+requests==2.31.0
+urllib3==2.1.0
+vk-api==11.9.9
