@@ -1,5 +1,5 @@
 from aiogram import Bot, Dispatcher, types
-from aiogram.filters import CommandStart, Filter
+from aiogram.filters import CommandStart
 from aiogram.exceptions import TelegramNetworkError
 import asyncio
 
@@ -29,16 +29,18 @@ async def get_dialogflow(message: types.Message) -> None:
 
 
 async def connect_telegram():
-    telegram_token = os.getenv('TELEGRAM_TOKEN')
-    bot = Bot(token=telegram_token)
-    dp = Dispatcher()
-    dp.message.register(get_start, CommandStart())
-    dp.message.register(get_dialogflow)
     logging.basicConfig(filename="bot.log",
                         level=logging.INFO,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
                         )
     logger.setLevel(logging.INFO)
+    telegram_token = os.getenv('TELEGRAM_TOKEN')
+    bot = Bot(token=telegram_token)
+    dp = Dispatcher()
+
+    dp.message.register(get_start, CommandStart())
+    dp.message.register(get_dialogflow)
+
     try:
         await dp.start_polling(bot)
     except TelegramNetworkError as con_err:
