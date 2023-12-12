@@ -14,15 +14,18 @@ def get_dialogflow_vk(event, vk_api) -> None:
     session_id = str(event.user_id)
     texts = [event.text]
     language_code = "ru-RU"
-    intents = detect_intent_texts(project_id=project_id,
+    intents, fallback = detect_intent_texts(project_id=project_id,
                                   session_id=session_id,
                                   texts=texts,
                                   language_code=language_code)
-    vk_api.messages.send(
-        user_id=event.user_id,
-        message=intents,
-        random_id=random.randint(1, 1000)
-    )
+    if fallback:
+        pass
+    else:
+        vk_api.messages.send(
+            user_id=event.user_id,
+            message=intents,
+            random_id=random.randint(1, 1000)
+        )
 
 
 if __name__ == "__main__":

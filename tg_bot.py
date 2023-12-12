@@ -21,10 +21,11 @@ async def get_dialogflow(message: types.Message) -> None:
     session_id = str(message.from_user.id)
     texts = [message.text]
     language_code = "ru-RU"
-    intents = detect_intent_texts(project_id=project_id,
+    intents, fallback = detect_intent_texts(project_id=project_id,
                                   session_id=session_id,
                                   texts=texts,
                                   language_code=language_code)
+
     await message.answer(intents)
 
 
