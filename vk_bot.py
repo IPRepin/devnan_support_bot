@@ -8,6 +8,10 @@ from vk_api.longpoll import VkLongPoll, VkEventType
 
 from dialogflow_answer import detect_intent_texts
 
+import logging
+
+logger = logging.getLogger(__name__)
+
 
 def get_dialogflow_vk(event, vk_api) -> None:
     project_id = os.getenv("DIALOGFLOW_ID")
@@ -30,6 +34,11 @@ def get_dialogflow_vk(event, vk_api) -> None:
 
 if __name__ == "__main__":
     load_dotenv()
+    logging.basicConfig(filename="bot.log",
+                        level=logging.INFO,
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+                        )
+    logger.setLevel(logging.INFO)
     vk_session = vk.VkApi(token=os.getenv("VK_TOKEN"))
     vk_api = vk_session.get_api()
     longpoll = VkLongPoll(vk_session)

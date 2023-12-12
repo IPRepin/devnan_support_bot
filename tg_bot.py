@@ -5,10 +5,9 @@ import asyncio
 
 from dotenv import load_dotenv
 import os
+from dialogflow_answer import detect_intent_texts
 
 import logging
-
-from dialogflow_answer import detect_intent_texts
 
 logger = logging.getLogger(__name__)
 
