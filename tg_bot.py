@@ -8,6 +8,7 @@ import os
 from dialogflow_answer import detect_intent_texts
 
 import logging
+from logs_hendler_telegram import TelegramBotHandler
 
 logger = logging.getLogger(__name__)
 
@@ -29,15 +30,9 @@ async def get_dialogflow(message: types.Message) -> None:
 
 
 async def connect_telegram():
-    logging.basicConfig(filename="bot.log",
-                        level=logging.INFO,
-                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
-                        )
-    logger.setLevel(logging.INFO)
     telegram_token = os.getenv('TELEGRAM_TOKEN')
     bot = Bot(token=telegram_token)
     dp = Dispatcher()
-
     dp.message.register(get_start, CommandStart())
     dp.message.register(get_dialogflow)
 
@@ -51,5 +46,10 @@ async def connect_telegram():
 
 if __name__ == '__main__':
     load_dotenv()
+    telegram_log_handler = TelegramBotHandler()
+    logging.basicConfig(handlers=[telegram_log_handler],
+                        level=logging.ERROR,
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     project_id = os.getenv("DIALOGFLOW_ID")
     asyncio.run(connect_telegram())
+
