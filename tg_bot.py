@@ -22,9 +22,9 @@ async def get_dialogflow(message: types.Message) -> None:
     texts = [message.text]
     language_code = "ru-RU"
     intents, fallback = detect_intent_texts(project_id=project_id,
-                                  session_id=session_id,
-                                  texts=texts,
-                                  language_code=language_code)
+                                            session_id=session_id,
+                                            texts=texts,
+                                            language_code=language_code)
 
     await message.answer(intents)
 
@@ -52,4 +52,3 @@ if __name__ == '__main__':
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     project_id = os.getenv("DIALOGFLOW_ID")
     asyncio.run(connect_telegram())
-

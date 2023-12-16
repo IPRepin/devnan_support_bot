@@ -21,9 +21,9 @@ def get_dialogflow_vk(event, vk_api) -> None:
     texts = [event.text]
     language_code = "ru-RU"
     intents, fallback = detect_intent_texts(project_id=project_id,
-                                  session_id=session_id,
-                                  texts=texts,
-                                  language_code=language_code)
+                                            session_id=session_id,
+                                            texts=texts,
+                                            language_code=language_code)
     if fallback:
         pass
     else:
@@ -50,5 +50,3 @@ if __name__ == "__main__":
                 get_dialogflow_vk(event, vk_api)
     except VkApiError as vk_err:
         logger.error(vk_err)
-
-
