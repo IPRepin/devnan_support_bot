@@ -37,4 +37,4 @@ def create_api_key(project_id: str, suffix: str) -> Key:
     return response
 
 
-create_api_key(project_id="devman-bot-dep", suffix="bot")
+create_api_key(project_id="id", suffix="suf")
