@@ -25,8 +25,10 @@ async def get_dialogflow(message: types.Message) -> None:
                                             session_id=session_id,
                                             texts=texts,
                                             language_code=language_code)
-
-    await message.answer(intents)
+    if fallback:
+        await message.answer(fallback)
+    else:
+        await message.answer(intents)
 
 
 async def connect_telegram():
