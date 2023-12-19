@@ -1,5 +1,5 @@
 from google.cloud import dialogflow
-import google.api_core
+from google.api_core import exceptions
 
 import logging
 from logs_hendler_telegram import TelegramBotHandler
@@ -31,7 +31,7 @@ def detect_intent_texts(project_id: str,
             is_fallback = response.query_result.intent.is_fallback
             dialogflow_answer = format(response.query_result.fulfillment_text)
             return dialogflow_answer, is_fallback
-    except google.api_core.exceptions.InternalServerError as err:
+    except exceptions.InternalServerError as err:
         logger.error(err)
-    except google.api_core.exceptions.GoogleAPIError as err:
+    except exceptions.GoogleAPIError as err:
         logger.error(err)
