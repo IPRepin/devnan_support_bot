@@ -33,3 +33,5 @@ def detect_intent_texts(project_id: str,
             return dialogflow_answer, is_fallback
     except google.api_core.exceptions.InternalServerError as err:
         logger.error(err)
+    except google.api_core.exceptions.GoogleAPIError as err:
+        logger.error(err)
