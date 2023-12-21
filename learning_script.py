@@ -16,7 +16,7 @@ def create_intent(project_id: str,
                   display_name: str,
                   training_phrases_parts: list,
                   message_texts: list
-                  ):
+                  ) -> None:
     intents_client = dialogflow.IntentsClient()
 
     parent = dialogflow.AgentsClient.agent_path(project_id)
