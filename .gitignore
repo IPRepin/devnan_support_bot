@@ -7,3 +7,4 @@ test.py
 devman_logs.log
 __pycache__/**
 bot.log
+application_default_credentials.json
