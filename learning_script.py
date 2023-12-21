@@ -44,11 +44,12 @@ def create_intent(project_id: str,
 if __name__ == '__main__':
     load_dotenv()
     data = open_learning()
-    training_phrases_parts = data['Устройство на работу']['questions']
-    message_texts = [data['Устройство на работу']['answer']]
-    project_id = os.getenv("DIALOGFLOW_ID")
-    display_name = "Как устроиться к вам на работу"
-    create_intent(project_id=project_id,
-                  display_name=display_name,
-                  training_phrases_parts=training_phrases_parts,
-                  message_texts=message_texts)
+    for key, value in data.items():
+        training_phrases_parts = data[key]['questions']
+        message_texts = [data[key]['answer']]
+        project_id = os.getenv("DIALOGFLOW_ID")
+        display_name = f"{key}"
+        create_intent(project_id=project_id,
+                      display_name=display_name,
+                      training_phrases_parts=training_phrases_parts,
+                      message_texts=message_texts)
