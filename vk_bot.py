@@ -16,7 +16,6 @@ logger = logging.getLogger(__name__)
 
 
 def get_dialogflow_vk(event, vk_api) -> None:
-    project_id = os.getenv("DIALOGFLOW_ID")
     session_id = str(event.user_id)
     texts = [event.text]
     language_code = "ru-RU"
@@ -24,9 +23,7 @@ def get_dialogflow_vk(event, vk_api) -> None:
                                             session_id=session_id,
                                             texts=texts,
                                             language_code=language_code)
-    if fallback:
-        pass
-    else:
+    if not fallback:
         vk_api.messages.send(
             user_id=event.user_id,
             message=intents,
@@ -41,6 +38,7 @@ if __name__ == "__main__":
                         level=logging.ERROR,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     vk_session = vk.VkApi(token=os.getenv("VK_TOKEN"))
+    project_id = os.getenv("DIALOGFLOW_ID")
     try:
         vk_api = vk_session.get_api()
         longpoll = VkLongPoll(vk_session)

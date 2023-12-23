@@ -7,7 +7,7 @@ import json
 
 
 def open_learning_file():
-    with open(os.getenv("LEARN_FILE_PATH"), 'r', encoding="UTF-8") as file:
+    with open(learning_file, 'r', encoding="UTF-8") as file:
         data = json.load(file)
     return data
 
@@ -43,6 +43,7 @@ def create_intent(project_id: str,
 
 if __name__ == '__main__':
     load_dotenv()
+    learning_file = os.getenv("LEARN_FILE_PATH")
     data_learning_file = open_learning_file()
     for key, value in data_learning_file.items():
         training_phrases_parts = data_learning_file[key]['questions']

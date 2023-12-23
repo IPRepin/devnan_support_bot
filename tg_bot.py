@@ -26,13 +26,14 @@ async def get_dialogflow(message: types.Message) -> None:
                                             texts=texts,
                                             language_code=language_code)
     if fallback:
-        await message.answer(fallback)
+        await message.answer(intents)
+        print(intents)
     else:
         await message.answer(intents)
+        print(intents)
 
 
 async def connect_telegram():
-    telegram_token = os.getenv('TELEGRAM_TOKEN')
     bot = Bot(token=telegram_token)
     dp = Dispatcher()
     dp.message.register(get_start, CommandStart())
@@ -53,4 +54,5 @@ if __name__ == '__main__':
                         level=logging.ERROR,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     project_id = os.getenv("DIALOGFLOW_ID")
+    telegram_token = os.getenv('TELEGRAM_TOKEN')
     asyncio.run(connect_telegram())
