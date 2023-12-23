@@ -6,8 +6,8 @@ from google.cloud import dialogflow
 import json
 
 
-def open_learning():
-    with open('learning.json', 'r', encoding="UTF-8") as file:
+def open_learning_file():
+    with open(os.getenv("LEARN_FILE_PATH"), 'r', encoding="UTF-8") as file:
         data = json.load(file)
     return data
 
@@ -43,13 +43,12 @@ def create_intent(project_id: str,
 
 if __name__ == '__main__':
     load_dotenv()
-    data = open_learning()
-    for key, value in data.items():
-        training_phrases_parts = data[key]['questions']
-        message_texts = [data[key]['answer']]
+    data_learning_file = open_learning_file()
+    for key, value in data_learning_file.items():
+        training_phrases_parts = data_learning_file[key]['questions']
+        message_texts = [data_learning_file[key]['answer']]
         project_id = os.getenv("DIALOGFLOW_ID")
-        display_name = f"{key}"
         create_intent(project_id=project_id,
-                      display_name=display_name,
+                      display_name=key,
                       training_phrases_parts=training_phrases_parts,
                       message_texts=message_texts)

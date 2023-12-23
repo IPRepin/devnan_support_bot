@@ -9,3 +9,4 @@ __pycache__/**
 bot.log
 application_default_credentials.json
 learning.json
+run.py
