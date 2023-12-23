@@ -1,13 +1,13 @@
-from aiogram import Bot, Dispatcher, types
-from aiogram.filters import CommandStart
-from aiogram.exceptions import TelegramNetworkError
 import asyncio
-
-from dotenv import load_dotenv
-import os
-from dialogflow_answer import detect_intent_texts
-
 import logging
+import os
+
+from aiogram import Bot, Dispatcher, types
+from aiogram.exceptions import TelegramNetworkError
+from aiogram.filters import CommandStart
+from dotenv import load_dotenv
+
+from dialogflow_answer import detect_intent_texts
 from logs_hendler_telegram import TelegramBotHandler
 
 logger = logging.getLogger(__name__)

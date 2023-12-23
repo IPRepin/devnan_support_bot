@@ -62,11 +62,19 @@ DialogFlow - это облачный сервис распознавания е�
     * Chat id Телеграм бота сообщений о ошибках `TG_CHAT_ID='Ваш_chat_id_бота_сообщений_о_ошибках'`
     * Идентификатор проекта GoogleCloud `DIALOGFLOW_ID='ID_проекта_GoogleCloud'`
     * Путь к файлу с ключами от вашего Google-аккаунта `GOOGLE_APPLICATION_CREDENTIALS='путь/до/файла/application_default_credentials.json'`
-7. Создаем бота в телеграм при помощи [BotFather](https://t.me/BotFather)
+    * Путь к json файлу с обучающими фразами для DialogFlow `LEARN_FILE_PATH='путь/до/файла/learning.json'`
 
 
 ## Настройка DialogFlow ##
 Для настройки DialogFlow обратитесь к [документации](https://cloud.google.com/dialogflow/es/docs/quick/setup).
+
+## Обучение DialogFlow ##
+Бот имеет функцию обучения DialogFlow при помощи обучающих фраз.
+Пример файла json с обучающими фразами [learning.json](https://github.com/IPRepin/devnan_support_bot/blob/master/learning.json)
+Для создания Intent с тренеровачными фразами для обучения DialogFlow запускаем:
+`python learning_script.py`
+
+Поробнее узнать про создание Intent DialogFlow можно прочитав [документацию](https://cloud.google.com/dialogflow/es/docs/how/manage-intents#create-intent-python).
 
 ## Запуск бота Телеграм ##
 `python tg_bot.py`

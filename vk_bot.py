@@ -1,15 +1,13 @@
-from dotenv import load_dotenv
+import logging
 import os
-
 import random
 
 import vk_api as vk
-from vk_api.longpoll import VkLongPoll, VkEventType
+from dotenv import load_dotenv
 from vk_api.exceptions import VkApiError
+from vk_api.longpoll import VkLongPoll, VkEventType
 
 from dialogflow_answer import detect_intent_texts
-
-import logging
 from logs_hendler_telegram import TelegramBotHandler
 
 logger = logging.getLogger(__name__)

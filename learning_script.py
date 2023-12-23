@@ -1,9 +1,8 @@
-import os
-from dotenv import load_dotenv
-
-from google.cloud import dialogflow
-
 import json
+import os
+
+from dotenv import load_dotenv
+from google.cloud import dialogflow
 
 
 def open_learning_file():
@@ -43,8 +42,8 @@ def create_intent(project_id: str,
 
 if __name__ == '__main__':
     load_dotenv()
-    learning_file = os.getenv("LEARN_FILE_PATH")
     data_learning_file = open_learning_file()
+    learning_file = os.getenv("LEARN_FILE_PATH")
     for key, value in data_learning_file.items():
         training_phrases_parts = data_learning_file[key]['questions']
         message_texts = [data_learning_file[key]['answer']]

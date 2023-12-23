@@ -1,7 +1,8 @@
-from google.cloud import dialogflow
-from google.api_core import exceptions
-
 import logging
+
+from google.api_core import exceptions
+from google.cloud import dialogflow
+
 from logs_hendler_telegram import TelegramBotHandler
 
 logger = logging.getLogger(__name__)
