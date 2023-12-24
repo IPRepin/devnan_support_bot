@@ -6,6 +6,7 @@ from aiogram import Bot, Dispatcher, types
 from aiogram.exceptions import TelegramNetworkError
 from aiogram.filters import CommandStart
 from dotenv import load_dotenv
+from google.api_core import exceptions
 
 from dialogflow_answer import detect_intent_texts
 from logs_hendler_telegram import TelegramBotHandler
@@ -38,14 +39,10 @@ async def connect_telegram():
     dp = Dispatcher()
     dp.message.register(get_start, CommandStart())
     dp.message.register(get_dialogflow)
-
     try:
         await dp.start_polling(bot)
-    except TelegramNetworkError as con_err:
-        logger.error(con_err)
     finally:
         await bot.close()
-
 
 if __name__ == '__main__':
     load_dotenv()
@@ -55,4 +52,11 @@ if __name__ == '__main__':
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
     project_id = os.getenv("DIALOGFLOW_ID")
     telegram_token = os.getenv('TELEGRAM_TOKEN')
-    asyncio.run(connect_telegram())
+    try:
+        asyncio.run(connect_telegram())
+    except TelegramNetworkError as con_err:
+        logger.error(con_err)
+    except exceptions.InternalServerError as err:
+        logger.error(err)
+    except exceptions.GoogleAPIError as err:
+        logger.error(err)

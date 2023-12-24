@@ -8,12 +8,13 @@ from vk_api.exceptions import VkApiError
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from dialogflow_answer import detect_intent_texts
+from google.api_core import exceptions
 from logs_hendler_telegram import TelegramBotHandler
 
 logger = logging.getLogger(__name__)
 
 
-def get_dialogflow_vk(event, vk_api) -> None:
+def processes_dialogflow_vk(event, vk_api) -> None:
     session_id = str(event.user_id)
     texts = [event.text]
     language_code = "ru-RU"
@@ -43,6 +44,10 @@ if __name__ == "__main__":
         logger.info("VK bot started")
         for event in longpoll.listen():
             if event.type == VkEventType.MESSAGE_NEW and event.to_me:
-                get_dialogflow_vk(event, vk_api)
+                processes_dialogflow_vk(event, vk_api)
     except VkApiError as vk_err:
         logger.error(vk_err)
+    except exceptions.InternalServerError as err:
+        logger.error(err)
+    except exceptions.GoogleAPIError as err:
+        logger.error(err)

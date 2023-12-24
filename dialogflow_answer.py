@@ -1,6 +1,5 @@
 import logging
 
-from google.api_core import exceptions
 from google.cloud import dialogflow
 
 from logs_hendler_telegram import TelegramBotHandler
@@ -18,19 +17,14 @@ def detect_intent_texts(project_id: str,
                         level=logging.ERROR,
                         format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
-    try:
-        session_client = dialogflow.SessionsClient()
-        session = session_client.session_path(project_id, session_id)
+    session_client = dialogflow.SessionsClient()
+    session = session_client.session_path(project_id, session_id)
 
-        text_input = dialogflow.TextInput(text=str(texts), language_code=language_code)
-        query_input = dialogflow.QueryInput(text=text_input)
-        response = session_client.detect_intent(
-            request={"session": session, "query_input": query_input}
-        )
-        is_fallback = response.query_result.intent.is_fallback
-        dialogflow_answer = format(response.query_result.fulfillment_text)
-        return dialogflow_answer, is_fallback
-    except exceptions.InternalServerError as err:
-        logger.error(err)
-    except exceptions.GoogleAPIError as err:
-        logger.error(err)
+    text_input = dialogflow.TextInput(text=str(texts), language_code=language_code)
+    query_input = dialogflow.QueryInput(text=text_input)
+    response = session_client.detect_intent(
+        request={"session": session, "query_input": query_input}
+    )
+    is_fallback = response.query_result.intent.is_fallback
+    dialogflow_answer = format(response.query_result.fulfillment_text)
+    return dialogflow_answer, is_fallback
