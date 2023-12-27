@@ -26,12 +26,7 @@ async def get_dialogflow(message: types.Message) -> None:
                                             session_id=session_id,
                                             texts=texts,
                                             language_code=language_code)
-    if fallback:
-        await message.answer(intents)
-        print(intents)
-    else:
-        await message.answer(intents)
-        print(intents)
+    await message.answer(intents)
 
 
 async def connect_telegram():
@@ -43,6 +38,7 @@ async def connect_telegram():
         await dp.start_polling(bot)
     finally:
         await bot.close()
+
 
 if __name__ == '__main__':
     load_dotenv()

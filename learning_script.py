@@ -43,13 +43,12 @@ def create_intent(project_id: str,
 if __name__ == '__main__':
     load_dotenv()
     learning_file = os.getenv("LEARN_FILE_PATH")
+    project_id = os.getenv("DIALOGFLOW_ID")
     data_learning_file = open_learning_file()
-    for key, value in data_learning_file.items():
-        index = data_learning_file[key]
-        training_phrases_parts = index['questions']
-        message_texts = [index['answer']]
-        project_id = os.getenv("DIALOGFLOW_ID")
+    for learn_name, training_phrases in data_learning_file.items():
+        training_phrases_parts = training_phrases['questions']
+        message_texts = [training_phrases['answer']]
         create_intent(project_id=project_id,
-                      display_name=key,
+                      display_name=learn_name,
                       training_phrases_parts=training_phrases_parts,
                       message_texts=message_texts)
