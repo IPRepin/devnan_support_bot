@@ -11,11 +11,12 @@ def open_learning_file():
     return data
 
 
-def create_intent(project_id: str,
-                  display_name: str,
-                  training_phrases_parts: list,
-                  message_texts: list
-                  ) -> None:
+def create_intent(
+        display_name: str,
+        training_phrases_parts: list,
+        message_texts: list
+) -> None:
+    project_id = os.getenv("DIALOGFLOW_ID")
     intents_client = dialogflow.IntentsClient()
 
     parent = dialogflow.AgentsClient.agent_path(project_id)
@@ -28,10 +29,11 @@ def create_intent(project_id: str,
     text = dialogflow.Intent.Message.Text(text=message_texts)
     message = dialogflow.Intent.Message(text=text)
 
-    intent = dialogflow.Intent(display_name=display_name,
-                               training_phrases=training_phrases,
-                               messages=[message]
-                               )
+    intent = dialogflow.Intent(
+        display_name=display_name,
+        training_phrases=training_phrases,
+        messages=[message]
+    )
 
     response = intents_client.create_intent(
         request={"parent": parent, "intent": intent}
@@ -43,12 +45,12 @@ def create_intent(project_id: str,
 if __name__ == '__main__':
     load_dotenv()
     learning_file = os.getenv("LEARN_FILE_PATH")
-    project_id = os.getenv("DIALOGFLOW_ID")
     data_learning_file = open_learning_file()
     for learn_name, training_phrases in data_learning_file.items():
         training_phrases_parts = training_phrases['questions']
         message_texts = [training_phrases['answer']]
-        create_intent(project_id=project_id,
-                      display_name=learn_name,
-                      training_phrases_parts=training_phrases_parts,
-                      message_texts=message_texts)
+        create_intent(
+            display_name=learn_name,
+            training_phrases_parts=training_phrases_parts,
+            message_texts=message_texts
+        )
