@@ -4,17 +4,18 @@ import random
 
 import vk_api as vk
 from dotenv import load_dotenv
+from google.api_core import exceptions
 from vk_api.exceptions import VkApiError
 from vk_api.longpoll import VkLongPoll, VkEventType
 
 from dialogflow_answer import detect_intent_texts
-from google.api_core import exceptions
 from logs_hendler_telegram import TelegramBotHandler
 
 logger = logging.getLogger(__name__)
 
 
 def processes_dialogflow_vk(event, vk_api) -> None:
+    project_id = os.getenv("DIALOGFLOW_ID")
     session_id = str(event.user_id)
     texts = [event.text]
     language_code = "ru-RU"
@@ -30,14 +31,8 @@ def processes_dialogflow_vk(event, vk_api) -> None:
         )
 
 
-if __name__ == "__main__":
-    load_dotenv()
-    telegram_log_handler = TelegramBotHandler()
-    logging.basicConfig(handlers=[telegram_log_handler],
-                        level=logging.ERROR,
-                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+def main():
     vk_session = vk.VkApi(token=os.getenv("VK_TOKEN"))
-    project_id = os.getenv("DIALOGFLOW_ID")
     try:
         vk_api = vk_session.get_api()
         longpoll = VkLongPoll(vk_session)
@@ -51,3 +46,12 @@ if __name__ == "__main__":
         logger.error(err)
     except exceptions.GoogleAPIError as err:
         logger.error(err)
+
+
+if __name__ == "__main__":
+    load_dotenv()
+    telegram_log_handler = TelegramBotHandler()
+    logging.basicConfig(handlers=[telegram_log_handler],
+                        level=logging.ERROR,
+                        format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+    main()
