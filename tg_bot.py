@@ -1,6 +1,7 @@
 import asyncio
 import logging
 import os
+from functools import partial
 
 from aiogram import Bot, Dispatcher, types
 from aiogram.exceptions import TelegramNetworkError
@@ -18,8 +19,7 @@ async def get_start(message: types.Message) -> None:
     await message.answer(f"Здравствуйте {message.from_user.first_name}")
 
 
-async def get_dialogflow(message: types.Message) -> None:
-    project_id = os.getenv("DIALOGFLOW_ID")
+async def get_dialogflow(message: types.Message, project_id: str) -> None:
     session_id = str(message.from_user.id)
     texts = [message.text]
     language_code = "ru-RU"
@@ -30,11 +30,11 @@ async def get_dialogflow(message: types.Message) -> None:
     await message.answer(intents)
 
 
-async def connect_telegram(telegram_token: str) -> None:
+async def connect_telegram(telegram_token: str, project_id: str) -> None:
     bot = Bot(token=telegram_token)
     dp = Dispatcher()
     dp.message.register(get_start, CommandStart())
-    dp.message.register(get_dialogflow)
+    dp.message.register(get_dialogflow, partial(get_dialogflow, project_id=project_id))
     try:
         await dp.start_polling(bot)
     finally:
@@ -43,8 +43,9 @@ async def connect_telegram(telegram_token: str) -> None:
 
 def main():
     telegram_token = os.getenv('TELEGRAM_TOKEN')
+    project_id = os.getenv("DIALOGFLOW_ID")
     try:
-        asyncio.run(connect_telegram(telegram_token))
+        asyncio.run(connect_telegram(telegram_token, project_id))
     except TelegramNetworkError as con_err:
         logger.error(con_err)
     except exceptions.InternalServerError as err:
